@@ -1,9 +1,9 @@
-# importing libraries
+#Importing essential libraries
 import numpy as np
 import pandas as pd
-#Importing data
+#Loading the data
 data = pd.read_csv('/content/drive/MyDrive/Restaurant_Reviews.tsv',delimiter='\t',quoting = 3)
-##dowloading packages
+#Importing essential libraries and downloading packages
 import nltk
 import re
 nltk.download('stopwords')
@@ -18,7 +18,6 @@ for i in range (0, 1000):
     review = [ps.stem(word) for word in review if not word in set(stopwords.words('english'))]
     review = ' '.join(review)
     corpus.append(review)
-# Creating bag of words
 from sklearn.feature_extraction.text import TfidfVectorizer
 tfidf_vectorizer = TfidfVectorizer(max_features=1500)
 X = tfidf_vectorizer.fit_transform(corpus).toarray()
@@ -47,5 +46,22 @@ X_test_pca = pca.transform(X_test)
 
 # Use the trained SVM classifier to make predictions on the PCA-transformed test data
 y_pred = classifier.predict(X_test_pca)
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test,y_pred)
+cm
+classifier = SVC(kernel='linear', C=0.1, random_state=0) 
+
+classifier.fit(X_train, y_train)
+def predict_sentiment(sample_review):
+  sample_review = re.sub(pattern='[^a-zA-Z]',repl=' ', string = sample_review)
+  sample_review = sample_review.lower()
+  sample_review_words = sample_review.split()
+  sample_review_words = [word for word in sample_review_words if not word in set(stopwords.words('english'))]
+  ps = PorterStemmer()
+  final_review = [ps.stem(word) for word in sample_review_words]
+  final_review = ' '.join(final_review)
+
+  temp = tfidf_vectorizer.transform([final_review]).toarray()
+  return classifier.predict(temp)
 
 
