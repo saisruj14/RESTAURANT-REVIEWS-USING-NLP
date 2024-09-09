@@ -1,9 +1,9 @@
-#Importing essential libraries
+
 import numpy as np
 import pandas as pd
-#Loading the data
+
 data = pd.read_csv('/content/drive/MyDrive/Restaurant_Reviews.tsv',delimiter='\t',quoting = 3)
-#Importing essential libraries and downloading packages
+
 import nltk
 import re
 nltk.download('stopwords')
@@ -25,7 +25,6 @@ y = data.iloc[:, 1].values
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
 X_train.shape, X_test.shape, y_train.shape, y_test.shape
-#Model training using SVM Algorithm and PCA reduction for dimension
 from sklearn.svm import SVC
 from sklearn.decomposition import PCA
 
@@ -44,7 +43,6 @@ cm = confusion_matrix(y_test,y_pred)
 
 X_test_pca = pca.transform(X_test)
 
-# Use the trained SVM classifier to make predictions on the PCA-transformed test data
 y_pred = classifier.predict(X_test_pca)
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_test,y_pred)
